@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>Threads 授權中...</title>
+</head>
+<body>
+  <h1>正在連線 Threads...</h1>
+  <p id="status">正在解析授權碼 (code)...</p>
+  <pre id="result"></pre>
+
+  <script>
+    // 待會要改成 Cloudflare Tunnel 給你的 https URL
+    const BACKEND_BASE_URL = 'https://YOUR_TUNNEL_DOMAIN';
+
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    const statusEl = document.getElementById('status');
+    const resultEl = document.getElementById('result');
+
+    if (!code) {
+      statusEl.textContent = 'URL 裡沒有找到 code 參數，可能是授權失敗或使用者取消。';
+    } else {
+      statusEl.textContent = '取得 code，正在向後端換取 access token...';
+
+      fetch(`${BACKEND_BASE_URL}/exchange-code`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code })
+      })
+        .then(r => r.json())
+        .then(data => {
+          statusEl.textContent = '後端回應：';
+          resultEl.textContent = JSON.stringify(data, null, 2);
+        })
+        .catch(err => {
+          statusEl.textContent = '呼叫後端失敗：';
+          resultEl.textContent = String(err);
+        });
+    }
+  </script>
+</body>
+</html>

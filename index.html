@@ -1,11 +1,1156 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-TW">
 <head>
-    <meta charset="UTF-8" />
-    <title>Lumia Threads OAuth</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="每日好物精選 - 精心挑選生活必備商品，每日更新，分類清楚，快速找到你需要的">
+    <meta property="og:title" content="每日好物精選 - 生活選物導購平台">
+    <meta property="og:description" content="溫柔氣質的生活選物平台，精選優質商品，每日更新，讓生活更美好">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 630'%3E%3Crect fill='%23d6c6c4' width='1200' height='630'/%3E%3Ctext x='50%25' y='50%25' font-size='48' font-weight='bold' text-anchor='middle' dominant-baseline='middle' fill='%23fff'%3E每日好物精選%3C/text%3E%3C/svg%3E">
+    <title>每日好物精選 - 溫柔氣質的生活選物導購平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "PingFang TC", "Microsoft YaHei", sans-serif;
+            color: #333;
+            background-color: #fff;
+            line-height: 1.6;
+        }
+
+        /* ===== 頂部導航 ===== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #333;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo-section:hover {
+            opacity: 0.8;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #d6c6c4 0%, #e8d8d6 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #666;
+            font-size: 15px;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: #d6c6c4;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #d6c6c4;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .hamburger span {
+            width: 24px;
+            height: 2px;
+            background-color: #333;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            flex-direction: column;
+            gap: 0;
+            list-style: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            max-height: 300px;
+        }
+
+        .mobile-menu li {
+            border-top: 1px solid #eee;
+        }
+
+        .mobile-menu a {
+            display: block;
+            padding: 16px 20px;
+            text-decoration: none;
+            color: #666;
+            font-size: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .mobile-menu a:hover {
+            background-color: #f9f9f9;
+            color: #d6c6c4;
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+        }
+
+        /* ===== Hero Banner ===== */
+        .hero {
+            margin-top: 70px;
+            background: linear-gradient(135deg, rgba(214, 198, 196, 0.15) 0%, rgba(232, 216, 214, 0.1) 100%);
+            padding: 100px 20px;
+            text-align: center;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 700px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            color: #333;
+            margin-bottom: 16px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: #d6c6c4;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #c7b3b1;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(214, 198, 196, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #fff;
+            color: #d6c6c4;
+            border: 2px solid #d6c6c4;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f9f9f9;
+            border-color: #c7b3b1;
+            color: #c7b3b1;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 20px;
+                min-height: auto;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* ===== 分類網格 ===== */
+        .categories-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 48px;
+            text-align: center;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .category-card {
+            background-color: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 32px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            border-color: #d6c6c4;
+            box-shadow: 0 8px 24px rgba(214, 198, 196, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .category-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(214, 198, 196, 0.1);
+            border-radius: 8px;
+            font-size: 28px;
+        }
+
+        .category-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        @media (max-width: 1024px) {
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .category-card {
+                padding: 24px 16px;
+            }
+
+            .section-title {
+                font-size: 24px;
+                margin-bottom: 32px;
+            }
+        }
+
+        /* ===== 今日推薦區 ===== */
+        .products-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .search-box {
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 14px 20px;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #d6c6c4;
+            box-shadow: 0 0 0 3px rgba(214, 198, 196, 0.1);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            border-color: #d6c6c4;
+            box-shadow: 0 12px 32px rgba(214, 198, 196, 0.2);
+            transform: translateY(-6px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(214, 198, 196, 0.2) 0%, rgba(232, 216, 214, 0.15) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .product-image img.loaded {
+            opacity: 1;
+        }
+
+        .product-image-placeholder {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(214, 198, 196, 0.2) 0%, rgba(232, 216, 214, 0.15) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d6c6c4;
+            font-size: 12px;
+        }
+
+        .product-info {
+            padding: 16px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            min-height: 40px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .stars {
+            color: #ffc107;
+            letter-spacing: 2px;
+        }
+
+        .rating-score {
+            color: #666;
+        }
+
+        .product-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: #d6c6c4;
+            margin-bottom: 12px;
+        }
+
+        .product-link {
+            margin-top: auto;
+        }
+
+        .btn-product {
+            width: 100%;
+            padding: 10px 16px;
+            background-color: #d6c6c4;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        .btn-product:hover {
+            background-color: #c7b3b1;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .search-input {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== 為何選擇我們 ===== */
+        .why-us-section {
+            background-color: #f9f9f9;
+            padding: 80px 20px;
+            margin: 80px 0;
+        }
+
+        .why-us-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .why-us-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .why-us-card {
+            background-color: #fff;
+            padding: 32px 24px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        .why-us-card:hover {
+            border-color: #d6c6c4;
+            box-shadow: 0 8px 24px rgba(214, 198, 196, 0.15);
+        }
+
+        .why-us-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 16px;
+            background-color: rgba(214, 198, 196, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .why-us-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .why-us-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 1024px) {
+            .why-us-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .why-us-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .why-us-section {
+                padding: 60px 20px;
+            }
+        }
+
+        /* ===== 關於平台 ===== */
+        .about-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-text {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .about-highlights {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .about-highlight {
+            text-align: center;
+            padding: 24px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .highlight-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #d6c6c4;
+            margin-bottom: 8px;
+        }
+
+        .highlight-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .about-highlights {
+                grid-template-columns: 1fr;
+            }
+
+            .about-text {
+                font-size: 14px;
+            }
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+            padding: 60px 20px;
+            margin-top: 80px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+        }
+
+        .footer-left h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .footer-left p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .footer-right h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 16px;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            font-size: 14px;
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #d6c6c4;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding-top: 24px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            font-size: 13px;
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+        }
+
+        /* ===== 通用 ===== */
+        main {
+            min-height: calc(100vh - 70px);
+        }
+
+        section {
+            scroll-margin-top: 70px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Lumia Threads OAuth Server is Running</h1>
-    <p>If you see this page, your GitHub Pages site is working!</p>
+    <!-- 頂部導航 -->
+    <header>
+        <nav class="navbar">
+            <a href="#" class="logo-section">
+                <div class="logo-icon">✨</div>
+                <span class="logo-text">每日好物精選</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#categories">分類</a></li>
+                <li><a href="#products">今日推薦</a></li>
+                <li><a href="#why-us">為何選擇我們</a></li>
+                <li><a href="#about">關於平台</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="mobile-menu" id="mobileMenu">
+                <li><a href="#categories">分類</a></li>
+                <li><a href="#products">今日推薦</a></li>
+                <li><a href="#why-us">為何選擇我們</a></li>
+                <li><a href="#about">關於平台</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Banner -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>每日更新｜把喜歡的日常帶回家</h1>
+                <p class="hero-subtitle">用溫柔的方式整理生活必備，分類清楚、快速好逛</p>
+                <div class="hero-buttons">
+                    <a href="#products" class="btn btn-primary">立即逛今日推薦</a>
+                    <a href="#categories" class="btn btn-secondary">查看分類</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 分類網格 -->
+        <section id="categories" class="categories-section">
+            <h2 class="section-title">分類瀏覽</h2>
+            <div class="categories-grid" id="categoriesGrid">
+                <div class="category-card" data-category="居家生活">
+                    <div class="category-icon">🏠</div>
+                    <div class="category-name">居家生活</div>
+                </div>
+                <div class="category-card" data-category="收納整理">
+                    <div class="category-icon">📦</div>
+                    <div class="category-name">收納整理</div>
+                </div>
+                <div class="category-card" data-category="美妝保養">
+                    <div class="category-icon">💄</div>
+                    <div class="category-name">美妝保養</div>
+                </div>
+                <div class="category-card" data-category="穿搭配件">
+                    <div class="category-icon">👗</div>
+                    <div class="category-name">穿搭配件</div>
+                </div>
+                <div class="category-card" data-category="3C小物">
+                    <div class="category-icon">📱</div>
+                    <div class="category-name">3C小物</div>
+                </div>
+                <div class="category-card" data-category="親子日常">
+                    <div class="category-icon">👶</div>
+                    <div class="category-name">親子日常</div>
+                </div>
+                <div class="category-card" data-category="寵物用品">
+                    <div class="category-icon">🐾</div>
+                    <div class="category-name">寵物用品</div>
+                </div>
+                <div class="category-card" data-category="美食飲品">
+                    <div class="category-icon">🍽️</div>
+                    <div class="category-name">美食飲品</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 今日推薦 -->
+        <section id="products" class="products-section">
+            <h2 class="section-title">今日推薦</h2>
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchInput" placeholder="搜尋商品關鍵字…">
+            </div>
+            <div class="products-grid" id="productsGrid"></div>
+        </section>
+
+        <!-- 為何選擇我們 -->
+        <section id="why-us" class="why-us-section">
+            <div class="why-us-container">
+                <h2 class="section-title">為何選擇我們</h2>
+                <div class="why-us-grid">
+                    <div class="why-us-card">
+                        <div class="why-us-icon">📅</div>
+                        <div class="why-us-title">每日更新</div>
+                        <p class="why-us-desc">精選商品每天更新，讓你隨時發現新寶藏，生活永遠保持新鮮感</p>
+                    </div>
+                    <div class="why-us-card">
+                        <div class="why-us-icon">✨</div>
+                        <div class="why-us-title">精選不踩雷</div>
+                        <p class="why-us-desc">嚴格篩選每一件商品，只推薦我們真心喜歡、經過驗證的好物</p>
+                    </div>
+                    <div class="why-us-card">
+                        <div class="why-us-icon">🏷️</div>
+                        <div class="why-us-title">分類清楚好逛</div>
+                        <p class="why-us-desc">8 大分類清晰明確，快速找到你需要的商品，省時又省力</p>
+                    </div>
+                    <div class="why-us-card">
+                        <div class="why-us-icon">⚡</div>
+                        <div class="why-us-title">快速找到需要</div>
+                        <p class="why-us-desc">強大搜尋功能，輸入關鍵字即刻篩選，讓購物變得更簡單</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 關於平台 -->
+        <section id="about" class="about-section">
+            <div class="about-content">
+                <h2 class="section-title">關於平台</h2>
+                <p class="about-text">
+                    每日好物精選是一個致力於發現生活中那些溫柔、美好小物的選物平台。我們相信，好的商品不只是功能完善，更應該帶來生活的溫度和質感。每一件推薦的商品，都經過我們細心挑選，希望能幫助你用更溫柔的方式整理生活、提升日常品質。
+                </p>
+                <div class="about-highlights">
+                    <div class="about-highlight">
+                        <div class="highlight-number">8+</div>
+                        <div class="highlight-label">生活分類</div>
+                    </div>
+                    <div class="about-highlight">
+                        <div class="highlight-number">每日</div>
+                        <div class="highlight-label">精心更新</div>
+                    </div>
+                    <div class="about-highlight">
+                        <div class="highlight-number">100%</div>
+                        <div class="highlight-label">精選推薦</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-left">
+                <h3>每日好物精選</h3>
+                <p>用溫柔的方式，發現生活中的美好</p>
+            </div>
+            <div class="footer-right">
+                <h4>快速連結</h4>
+                <ul class="footer-links">
+                    <li><a href="#categories">分類瀏覽</a></li>
+                    <li><a href="#products">今日推薦</a></li>
+                    <li><a href="#about">關於平台</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 每日好物精選 | 用溫柔的方式，發現生活中的美好
+        </div>
+    </footer>
+
+    <script>
+        // ===== 商品資料 =====
+        const products = [
+            {
+                id: 1,
+                name: "Momax Taiwan 摩米士台灣品牌旗艦店",
+                category: "3C小物",
+                price: "NT$599",
+                rating: 4.7,
+                link: "https://s.shopee.tw/2qPnGqlHHY"
+            },
+            {
+                id: 2,
+                name: "soundcore Liberty 4 NC 降噪真無線藍牙耳機",
+                category: "3C小物",
+                price: "NT$1,290",
+                rating: 4.8,
+                link: "https://s.shopee.tw/2g6N4XlucX"
+            },
+            {
+                id: 3,
+                name: "DREAM TREND凱夢 雙向負離子水光離子夾 直髮器 推薦 頭髮造型",
+                category: "美妝保養",
+                price: "NT$899",
+                rating: 4.6,
+                link: "https://s.shopee.tw/LiSJ1m3qv"
+            },
+            {
+                id: 4,
+                name: "日本 recolte 無線萬用調理機 Cordless Bonne RCP-7 切碎 攪拌 磨泥 打發 麗克特官方旗艦",
+                category: "美食飲品",
+                price: "NT$2,290",
+                rating: 4.9,
+                link: "https://s.shopee.tw/30jDT9kdwd"
+            },
+            {
+                id: 5,
+                name: "Tefal法國特福 法式歐蕾 高硬度礦物添加-不沾平底鍋/炒鍋｜法國製｜IH適用 (尺寸任選) 加碼送矽膠鍋鏟",
+                category: "美食飲品",
+                price: "NT$1,590",
+                rating: 4.7,
+                link: "https://s.shopee.tw/20qgHJoRyT"
+            },
+            {
+                id: 6,
+                name: "SKINTIFIC 5X神經醯胺小藍霜保濕霜臉部面霜30g 滋潤補水乳液修護膚色不均臉部保養妝前推薦 敏感肌",
+                category: "美妝保養",
+                price: "NT$399",
+                rating: 4.5,
+                link: "https://s.shopee.tw/2VmwsEmXxa"
+            },
+            {
+                id: 7,
+                name: "日本 recolte 調理鍋 Carre RPD-4 料理小方鍋 電火鍋 蒸 煮 炒 煎 燉 美食鍋 麗克特官方旗艦店",
+                category: "美食飲品",
+                price: "NT$1,890",
+                rating: 4.8,
+                link: "https://s.shopee.tw/2LTWfvnBIZ"
+            },
+            {
+                id: 8,
+                name: "隔日到貨 正品歐欣蘭香水型蓬鬆控油洗髮精 持久留香 沐浴乳 潤髮乳 潤髮素 洗髮水 洗髮乳 香水沐浴乳 護髮素",
+                category: "美妝保養",
+                price: "NT$299",
+                rating: 4.4,
+                link: "https://s.shopee.tw/1VuPgOqLzQ"
+            },
+            {
+                id: 9,
+                name: "Judydoll橘朵高光修容一體盤綜合盤啞光提亮面中凹陷立體骨相陰影鼻影自然提氣色遮瑕輪廓黑眼圈",
+                category: "美妝保養",
+                price: "NT$599",
+                rating: 4.6,
+                link: "https://s.shopee.tw/1LazU5qzKP"
+            },
+            {
+                id: 10,
+                name: "居家收納整理盒 簡約設計 多功能儲物 生活必備",
+                category: "收納整理",
+                price: "NT$449",
+                rating: 4.7,
+                link: "https://s.shopee.tw/example"
+            }
+        ];
+
+        let selectedCategory = null;
+        let searchQuery = "";
+
+        // ===== 初始化 =====
+        function init() {
+            renderProducts();
+            setupEventListeners();
+        }
+
+        // ===== 事件監聽 =====
+        function setupEventListeners() {
+            // 漢堡選單
+            const hamburger = document.getElementById("hamburger");
+            const mobileMenu = document.getElementById("mobileMenu");
+            
+            hamburger.addEventListener("click", () => {
+                hamburger.classList.toggle("active");
+                mobileMenu.classList.toggle("active");
+            });
+
+            // 手機選單連結點擊後自動收起
+            const mobileMenuLinks = mobileMenu.querySelectorAll("a");
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener("click", () => {
+                    hamburger.classList.remove("active");
+                    mobileMenu.classList.remove("active");
+                });
+            });
+
+            // 分類卡片點擊
+            const categoryCards = document.querySelectorAll(".category-card");
+            categoryCards.forEach(card => {
+                card.addEventListener("click", () => {
+                    const category = card.dataset.category;
+                    if (selectedCategory === category) {
+                        selectedCategory = null;
+                    } else {
+                        selectedCategory = category;
+                    }
+                    renderProducts();
+                });
+            });
+
+            // 搜尋框輸入
+            const searchInput = document.getElementById("searchInput");
+            searchInput.addEventListener("input", (e) => {
+                searchQuery = e.target.value.toLowerCase();
+                renderProducts();
+            });
+        }
+
+        // ===== 渲染商品 =====
+        function renderProducts() {
+            const productsGrid = document.getElementById("productsGrid");
+            productsGrid.innerHTML = "";
+
+            let filteredProducts = products;
+
+            // 分類篩選
+            if (selectedCategory) {
+                filteredProducts = filteredProducts.filter(p => p.category === selectedCategory);
+            }
+
+            // 搜尋篩選
+            if (searchQuery) {
+                filteredProducts = filteredProducts.filter(p => 
+                    p.name.toLowerCase().includes(searchQuery) ||
+                    p.category.toLowerCase().includes(searchQuery)
+                );
+            }
+
+            // 渲染卡片
+            filteredProducts.forEach(product => {
+                const card = createProductCard(product);
+                productsGrid.appendChild(card);
+            });
+
+            // 如果沒有結果
+            if (filteredProducts.length === 0) {
+                productsGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #999;">找不到符合條件的商品，請試試其他搜尋或分類</div>';
+            }
+        }
+
+        // ===== 建立商品卡片 =====
+        function createProductCard(product) {
+            const card = document.createElement("div");
+            card.className = "product-card";
+
+            const stars = "★".repeat(Math.floor(product.rating)) + 
+                         (product.rating % 1 >= 0.5 ? "✨" : "");
+
+            card.innerHTML = `
+                <div class="product-image">
+                    <div class="product-image-placeholder">
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="60" height="60" fill="url(#grad)"/>
+                            <circle cx="20" cy="20" r="8" fill="rgba(255,255,255,0.3)"/>
+                            <path d="M 10 35 L 25 20 L 40 30 L 50 15" stroke="rgba(255,255,255,0.3)" stroke-width="2" fill="none" stroke-linecap="round"/>
+                            <defs>
+                                <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#d6c6c4;stop-opacity:0.2" />
+                                    <stop offset="100%" style="stop-color:#e8d8d6;stop-opacity:0.15" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <img src="" alt="${product.name}" loading="lazy" style="display:none;">
+                </div>
+                <div class="product-info">
+                    <div class="product-name">${product.name}</div>
+                    <div class="product-rating">
+                        <span class="stars">${stars}</span>
+                        <span class="rating-score">${product.rating}</span>
+                    </div>
+                    <div class="product-price">${product.price}</div>
+                    <div class="product-link">
+                        <a href="${product.link}" target="_blank" rel="nofollow noopener" class="btn-product">前往蝦皮看更多</a>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // ===== 初始化應用 =====
+        document.addEventListener("DOMContentLoaded", init);
+    </script>
 </body>
 </html>
